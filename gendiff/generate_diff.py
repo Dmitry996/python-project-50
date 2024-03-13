@@ -4,8 +4,8 @@ import json
 def generate_diff(first_file: str, second_file: str):
     """Returns changes to the contents of the second file relative to the first
     Args:
-        first_file: path to the source file
-        second_file: path to the modified file """
+        first_file: Path to the source file.
+        second_file: Path to the modified file."""
 
     file_1: dict = json.load(open(first_file))
     file_2: dict = json.load(open(second_file))
