@@ -19,6 +19,6 @@ def test_generate_diff_json():
 def test_generate_diff_yaml():
     input_1 = get_path('file_1_plain.yaml')
     input_2 = get_path('file_2_plain.yml')
-    result = get_path('result.txt')
+    result = get_path('result_plain.txt')
     with open(result) as result:
         assert generate_diff(input_1, input_2) == result.read()
