@@ -1,43 +1,35 @@
-name: my-check
+name: My-check
 
 on:
-  push:
-  pull_request:
+  - push
+  - pull_request
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.11]
+        # we want to test our package on several versions of Python
+        python-version: [3.8, 3.9]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+        # make depends on poetry
       - name: Install dependencies
         run: |
           pip install poetry
           make install
-          pip install flake8 pytest
-          pip install coverage
       - name: Run linter and pytest
         run: |
-          poetry run flake8 gendiff
-          poetry run flake8 tests
-          poetry run pytest
-      - name: Create reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-      - name: Test and Report coverage
-        run: |
-          poetry run coverage run -m pytest
-          poetry run coverage lcov -o coverage/lcov.info
-      - name: Sending Reporter
+          make check
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v5.0.0
+        if: github.ref_name == 'main'
         env:
-          GITHUB_TOKEN: ${{ secrets.Coverage }} 
-        run: |
-          ./cc-test-reporter after-build -r "$GITHUB_TOKEN" -t lcov
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          debug: true
