@@ -1,38 +1,49 @@
 import json
 
 
-def generate_diff(first_file: str, second_file: str):
+def to_sting(value: str):
+    if isinstance(value, bool):
+        value = str(value).lower()
+
+    if value is None:
+        value = 'null'
+
+    return value
+
+
+def generate_diff(path_to_first_file: str, path_to_second_file: str):
     """Returns changes to the contents of the second file relative to the first
     Args:
         first_file: Path to the source file.
         second_file: Path to the modified file."""
 
-    file_1: dict = json.load(open(first_file))
-    file_2: dict = json.load(open(second_file))
+    with open(path_to_first_file) as first_file, open(path_to_second_file) as second_file:
+        file_1: dict = json.loads(first_file.read())
+        file_2: dict = json.loads(second_file.read())
 
-    diff = f'gendiff {first_file} {second_file}\n'
+    diff = f'gendiff {path_to_first_file} {path_to_second_file}\n'
     diff += '{\n'
 
-    for key, value in sorted(file_1.items()):
-        if isinstance(value, bool or None):
-            value = json.dumps(value)
+    combined_keys = set(list(file_1.keys()) + list(file_2.keys()))
+    for key in sorted(combined_keys):
+        if key in file_1 and key in file_2:
+            value_1 = to_sting(file_1[key])
+            value_2 = to_sting(file_2[key])
 
-        if key not in file_2:
-            diff += f'  - {key}: {value}\n'
+            if value_1 == value_2:
+                diff += f'    {key}: {value_1}\n'
 
-        elif key in file_2 and file_1[key] == file_2[key]:
-            diff += f'    {key}: {value}\n'
+            else:
+                diff += f'  - {key}: {value_1}\n'
+                diff += f'  + {key}: {value_2}\n'
 
-        elif key in file_2 and file_1[key] != file_2[key]:
-            diff += f'  - {key}: {value}\n'
-            diff += f'  + {key}: {file_2[key]}\n'
+        elif key in file_1:
+            value_1 = to_sting(file_1[key])
+            diff += f'  - {key}: {value_1}\n'
 
-    for key, value in sorted(file_2.items()):
-        if isinstance(value, bool or None):
-            value = json.dumps(value)
-
-        if key not in file_1:
-            diff += f'  + {key}: {value}\n'
+        else:
+            value_2 = to_sting(file_2[key])
+            diff += f'  + {key}: {value_2}\n'
 
     diff += '}\n'
     print(diff)
