@@ -23,7 +23,9 @@ jobs:
           pip install coverage
       - name: Run linter and pytest
         run: |
-          make check
+          poetry run flake8 gendiff
+          poetry run flake8 tests
+          poetry run pytest
       - name: Create reporter
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
