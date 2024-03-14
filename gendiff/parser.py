@@ -1,11 +1,12 @@
-import argparse
+import json
+import yaml
+from pathlib import Path
 
 
-def parser():
-    parser = argparse.ArgumentParser(description='Compares two configuration files and shows a difference.')  # noqa: E501
-    parser.add_argument('first_file')
-    parser.add_argument('second_file')
-    parser.add_argument('-f', '--format', help='set format of output')
+def open_file(file_path):
+    suffix = Path(file_path).suffix
 
-    args = parser.parse_args()
-    return args.first_file, args.second_file
+    with open(file_path) as file:
+        if suffix == '.json':
+            return json.loads(file.read())
+        return yaml.safe_load(file.read())

@@ -1,4 +1,5 @@
 import json
+from .parser import open_file
 
 
 def to_sting(value: str):
@@ -17,9 +18,8 @@ def generate_diff(path_to_first_file: str, path_to_second_file: str):
         first_file: Path to the source file.
         second_file: Path to the modified file."""
 
-    with open(path_to_first_file) as first_file, open(path_to_second_file) as second_file:  # noqa: E501
-        file_1: dict = json.loads(first_file.read())
-        file_2: dict = json.loads(second_file.read())
+    file_1: dict = open_file(path_to_first_file)
+    file_2: dict = open_file(path_to_second_file)
 
     gendiff_paths = f'gendiff {path_to_first_file} {path_to_second_file}'
     diff = '{\n'
