@@ -17,12 +17,12 @@ def generate_diff(path_to_first_file: str, path_to_second_file: str):
         first_file: Path to the source file.
         second_file: Path to the modified file."""
 
-    with open(path_to_first_file) as first_file, open(path_to_second_file) as second_file:
+    with open(path_to_first_file) as first_file, open(path_to_second_file) as second_file:  # noqa: E501
         file_1: dict = json.loads(first_file.read())
         file_2: dict = json.loads(second_file.read())
 
-    diff = f'gendiff {path_to_first_file} {path_to_second_file}\n'
-    diff += '{\n'
+    gendiff_paths = f'gendiff {path_to_first_file} {path_to_second_file}'
+    diff = '{\n'
 
     combined_keys = set(list(file_1.keys()) + list(file_2.keys()))
     for key in sorted(combined_keys):
@@ -45,5 +45,7 @@ def generate_diff(path_to_first_file: str, path_to_second_file: str):
             value_2 = to_sting(file_2[key])
             diff += f'  + {key}: {value_2}\n'
 
-    diff += '}\n'
+    diff += '}'
+    print(gendiff_paths)
     print(diff)
+    return diff
