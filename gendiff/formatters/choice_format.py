@@ -1,5 +1,6 @@
 from .stylish import make_stylish
 from .plain import make_plain
+from .json import make_json
 
 
 def choice_format(data, format: str):
@@ -14,5 +15,7 @@ def choice_format(data, format: str):
             return make_stylish(data)
         case 'plain':
             return make_plain(data)
+        case 'json':
+            return make_json(data)
 
-    return ValueError('unsupported format')
+    return ValueError('Unsupported format')
