@@ -14,7 +14,7 @@ def choice_format(data, format: str):
         case 'stylish':
             return make_stylish(data)
         case 'plain':
-            return make_plain(data)
+            return make_plain(data)[:-1]
         case 'json':
             return make_json(data)
 
