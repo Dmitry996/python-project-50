@@ -1,5 +1,6 @@
 from gendiff import generate_diff
 from pathlib import Path
+import pytest
 
 
 def get_path(file_name):
@@ -8,17 +9,15 @@ def get_path(file_name):
     return current_dir / 'fixtures' / file_name
 
 
-def test_generate_diff_json():
-    input_1 = get_path('file_1_plain.json')
-    input_2 = get_path('file_2_plain.json')
-    result = get_path('result_plain.txt')
-    with open(result) as result:
-        assert generate_diff(input_1, input_2) == result.read()
+test_files = [
+    ('file_1.json', 'file_2.json', 'result_stylish.txt', 'stylish'),
+    ('file_1.yaml', 'file_2.yml', 'result_stylish.txt', 'stylish')]
 
 
-def test_generate_diff_yaml():
-    input_1 = get_path('file_1_plain.yaml')
-    input_2 = get_path('file_2_plain.yml')
-    result = get_path('result_plain.txt')
-    with open(result) as result:
-        assert generate_diff(input_1, input_2) == result.read()
+@pytest.mark.parametrize('file_1, file_2, result_file, format', test_files)
+def test_generate_diff(file_1, file_2, result_file, format):
+    input_1 = get_path(file_1)
+    input_2 = get_path(file_2)
+    result = get_path(result_file)
+    with open(result) as res:
+        assert generate_diff(input_1, input_2) == res.read()
