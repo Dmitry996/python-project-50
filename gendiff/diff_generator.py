@@ -86,10 +86,10 @@ def diff_generator(data_1: dict, data_2: dict):  # noqa: C901
                 diff.append(for_children(key, value_1, value_2))
                 continue
 
-            if value_1 == value_2:
+            elif value_1 == value_2:
                 diff.append(for_unchanged(key, data_1[key]))
 
-            if value_1 != value_2:
+            else:
                 diff.append(for_modified(key, value_1, value_2))
         elif key in data_1:
             value = data_1[key]
