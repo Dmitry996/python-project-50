@@ -3,7 +3,7 @@ from .formatters.choice_format import choice_format
 from .diff_generator import diff_generator
 
 
-def generate_diff(path_to_file_1: str, path_to_file_2: str, formatter):  # noqa: E501
+def generate_diff(path_to_file_1: str, path_to_file_2: str, formatter='stylish'):  # noqa: E501
     """Returns changes to the contents of the second file relative to the first.
     Args:
         first_file: Path to the source file.
