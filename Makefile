@@ -13,6 +13,9 @@ lint:
 package-install:
 	python3 -m pip install --user dist/*.whl
 
+package-uninstall:
+	python3 -m pip uninstall dist/*.whl
+
 test-coverage:
 	poetry run pytest --cov=gendiff --cov-report xml
 
