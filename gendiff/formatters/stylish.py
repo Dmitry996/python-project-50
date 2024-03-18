@@ -1,4 +1,4 @@
-def to_sting(value: str, spaces_count=2):
+def to_string(value, spaces_count=2):
     """
     Brings the value to the correct string variant.
     Args:
@@ -8,15 +8,15 @@ def to_sting(value: str, spaces_count=2):
     if isinstance(value, bool):
         return str(value).lower()
 
-    if value is None:
+    elif value is None:
         return 'null'
 
-    if isinstance(value, dict):
+    elif isinstance(value, dict):
         sep = ' ' * (spaces_count + 4)
         result = ""
 
         for key, inner_value in value.items():
-            format_value = to_sting(inner_value, spaces_count + 4)
+            format_value = to_string(inner_value, spaces_count + 4)
             result += f"{sep}  {key}: {format_value}\n"
 
         end_sep = ' ' * (spaces_count + 2)
@@ -37,8 +37,8 @@ def make_stylish(data: list, spaces_count=2):
 
     for node in data:
 
-        value_old = to_sting(node.get("value_old"), spaces_count)
-        value_new = to_sting(node.get("value_new"), spaces_count)
+        value_old = to_string(node.get("value_old"), spaces_count)
+        value_new = to_string(node.get("value_new"), spaces_count)
 
         match node['status']:
             case 'unchanged':
