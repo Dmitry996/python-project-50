@@ -15,7 +15,10 @@ test_files = [
     ('file_1.yaml', 'file_2.json', 'result_stylish.txt', 'stylish'),
     ('file_1.json', 'file_2.json', 'result_plain.txt', 'plain'),
     ('file_1.yaml', 'file_2.yml', 'result_plain.txt', 'plain'),
-    ('file_1.yaml', 'file_2.json', 'result_plain.txt', 'plain')
+    ('file_1.yaml', 'file_2.json', 'result_plain.txt', 'plain'),
+    ('file_1.json', 'file_2.json', 'result_json.txt', 'json'),
+    ('file_1.yaml', 'file_2.yml', 'result_json.txt', 'json'),
+    ('file_1.yaml', 'file_2.json', 'result_json.txt', 'json')
 ]
 
 
