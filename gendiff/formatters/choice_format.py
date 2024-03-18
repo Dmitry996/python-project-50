@@ -1,4 +1,5 @@
 from .stylish import make_stylish
+from .plain import make_plain
 
 
 def choice_format(data, format: str):
@@ -11,5 +12,7 @@ def choice_format(data, format: str):
     match format:
         case 'stylish':
             return make_stylish(data)
+        case 'plain':
+            return make_plain(data)
 
     return ValueError('unsupported format')
