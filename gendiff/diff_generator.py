@@ -1,4 +1,4 @@
-def for_unchanged(key, value):
+def get_node_for_unchanged(key, value):
     """
     Returns a dictionary for a node that is unchanged.
     Args:
@@ -11,7 +11,7 @@ def for_unchanged(key, value):
             }
 
 
-def for_modified(key, value_old, value_new):
+def get_node_for_modified(key, value_old, value_new):
     """
     Returns the dictionary for the node that has been modified.
     Args:
@@ -26,7 +26,7 @@ def for_modified(key, value_old, value_new):
             }
 
 
-def for_deleted(key, value):
+def get_node_for_deleted(key, value):
     """
     Returns the dictionary for the node that was deleted.
     Args:
@@ -39,7 +39,7 @@ def for_deleted(key, value):
             }
 
 
-def for_added(key, value):
+def get_node_for_added(key, value):
     """
     Returns the dictionary for the node that was added.
     Args:
@@ -52,7 +52,7 @@ def for_added(key, value):
             }
 
 
-def for_children(key, value_old, value_new):
+def get_node_for_children(key, value_old, value_new):
     """
     Returns a dictionary for a node that has children
     and applies diff_generator to children.
@@ -63,11 +63,11 @@ def for_children(key, value_old, value_new):
     """
     return {'name': key,
             'status': 'node',
-            'children': diff_generator(value_old, value_new),
+            'children': generate_differences(value_old, value_new),
             }
 
 
-def diff_generator(data_1: dict, data_2: dict):  # noqa: C901
+def generate_differences(data_1: dict, data_2: dict):  # noqa: C901
     """
     Generates a dictionary of the difference between two input dictionaries.
     Args:
@@ -83,20 +83,20 @@ def diff_generator(data_1: dict, data_2: dict):  # noqa: C901
             value_2 = data_2[key]
 
             if isinstance(value_1, dict) and isinstance(value_2, dict):
-                diff.append(for_children(key, value_1, value_2))
+                diff.append(get_node_for_children(key, value_1, value_2))
                 continue
 
             elif value_1 == value_2:
-                diff.append(for_unchanged(key, data_1[key]))
+                diff.append(get_node_for_unchanged(key, data_1[key]))
 
             else:
-                diff.append(for_modified(key, value_1, value_2))
+                diff.append(get_node_for_modified(key, value_1, value_2))
         elif key in data_1:
             value = data_1[key]
-            diff.append(for_deleted(key, value))
+            diff.append(get_node_for_deleted(key, value))
 
         else:
             value = data_2[key]
-            diff.append(for_added(key, value))
+            diff.append(get_node_for_added(key, value))
 
     return sorted(diff, key=lambda x: x['name'])

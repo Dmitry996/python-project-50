@@ -1,6 +1,6 @@
-from .parser import open_file
-from .formatters.choice_format import choice_format
-from .diff_generator import diff_generator
+from .parser import get_data
+from .formatters import choice_format
+from .diff_generator import generate_differences
 
 
 def generate_diff(path_to_file_1: str, path_to_file_2: str, formatter='stylish'):  # noqa: E501
@@ -9,9 +9,9 @@ def generate_diff(path_to_file_1: str, path_to_file_2: str, formatter='stylish')
         first_file: Path to the source file.
         second_file: Path to the modified file."""
 
-    file_1: dict = open_file(path_to_file_1)
-    file_2: dict = open_file(path_to_file_2)
+    file_1: dict = get_data(path_to_file_1)
+    file_2: dict = get_data(path_to_file_2)
 
-    diff = diff_generator(file_1, file_2)
+    diff = generate_differences(file_1, file_2)
     result = choice_format(diff, formatter)
     return result

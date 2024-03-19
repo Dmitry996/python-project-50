@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 from gendiff import generate_diff
-from gendiff import parser
+from gendiff import get_perser_args
 
 
 def main():
-    first_file, second_file, formatter = parser()
+    first_file, second_file, formatter = get_perser_args()
     result = generate_diff(first_file, second_file, formatter)
     print(result)
 

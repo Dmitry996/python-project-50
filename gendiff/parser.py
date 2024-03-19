@@ -3,7 +3,7 @@ import yaml
 from pathlib import Path
 
 
-def open_file(file_path):
+def get_data(file_path):
     """
     The function determines the file type and returns
     the read file data in dictionary format.
